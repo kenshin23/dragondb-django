@@ -4,6 +4,7 @@ from django.db import models
 class Engine(models.Model):
     name = models.CharField(max_length=200)
     manufacturer = models.CharField(max_length=200)
+    country = models.CharField(max_length=200, default='')
     thrust_newtons_sea_level = models.DecimalField(max_digits=19, decimal_places=2, default=0.00)
     thrust_newtons_vacuum = models.DecimalField(max_digits=19, decimal_places=2, default=0.00)
     specific_impulse_sea_level = models.IntegerField(default=0)
@@ -17,6 +18,7 @@ class Engine(models.Model):
 class Rocket(models.Model):
     engines = models.ManyToManyField(Engine, through='RocketEngine')
     name = models.CharField(max_length=200)
+    country = models.CharField(max_length=200, default='')
     manufacturer = models.CharField(max_length=200)
     image_url = models.URLField(max_length=200)
 
@@ -32,3 +34,11 @@ class RocketEngine(models.Model):
 
     def __str__(self):
         return f'{self.rocket.manufacturer} {self.rocket.manufacturer} stage {self.stage}: {self.amount} engine(s)'
+
+
+class Fuel(models.Model):
+    engines = models.ManyToManyField(Engine)
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f'{self.name}'
