@@ -10,6 +10,9 @@ class Engine(models.Model):
     specific_impulse_vacuum = models.IntegerField(default=0)
     image_url = models.URLField(max_length=200)
 
+    def __str__(self):
+        return f'{self.manufacturer} {self.name}'
+
 
 class Rocket(models.Model):
     engines = models.ManyToManyField(Engine, through='RocketEngine')
@@ -17,9 +20,15 @@ class Rocket(models.Model):
     manufacturer = models.CharField(max_length=200)
     image_url = models.URLField(max_length=200)
 
+    def __str__(self):
+        return f'{self.manufacturer} {self.name}'
+
 
 class RocketEngine(models.Model):
     rocket = models.ForeignKey(Rocket, on_delete=models.CASCADE)
     engine = models.ForeignKey(Engine, on_delete=models.CASCADE)
     amount = models.IntegerField(default=0)
     stage  = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f'{self.rocket.manufacturer} {self.rocket.manufacturer} stage {self.stage}: {self.amount} engine(s)'
