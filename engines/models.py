@@ -48,6 +48,7 @@ class Fuel(models.Model):
 
     engines = models.ManyToManyField(Engine)
     name = models.CharField(max_length=100)
+    abbreviation = models.CharField(max_length=10, default='')
     fuel_type = models.CharField(
         max_length=2,
         choices=FUEL_TYPE_CHOICES,
@@ -55,4 +56,4 @@ class Fuel(models.Model):
     )
 
     def __str__(self):
-        return f'{self.name} as {self.get_fuel_type_display().lower()}'
+        return f'{self.name} ({self.abbreviation}) as {self.get_fuel_type_display().lower()}'
