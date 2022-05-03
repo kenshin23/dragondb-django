@@ -37,8 +37,22 @@ class RocketEngine(models.Model):
 
 
 class Fuel(models.Model):
+    OXIDIZER = 'OX'
+    LIQUID_FUEL = 'L'
+    SOLID_FUEL = 'S'
+    FUEL_TYPE_CHOICES = [
+        (OXIDIZER, 'Oxidizer'),
+        (LIQUID_FUEL, 'Liquid fuel'),
+        (SOLID_FUEL, 'Solid fuel'),
+    ]
+
     engines = models.ManyToManyField(Engine)
     name = models.CharField(max_length=100)
+    fuel_type = models.CharField(
+        max_length=2,
+        choices=FUEL_TYPE_CHOICES,
+        default=LIQUID_FUEL,
+    )
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.name} as {self.get_fuel_type_display().lower()}'
